@@ -1,0 +1,47 @@
+Creating Web Application using Maven in IntelliJ
+
+This tutorial will teach you on creating web application using maven in IntelliJ.
+
+creating a new project:
+Under new project, on the left side, click Maven. Add your project name and the location of the project to be save. Choose your JDK version, in our case, we use Java 8.
+Click Next. The GroupId and ArtifactId will be filled by default values based on the project name. Tick in Create from arechetype, and choose org.apache.maven.archetypes:maven-archetype-webapp. Click Next to continue creating the project.
+By default, when creating a webapp project in maven, it doesn’t include the java folder for the source code. For the sake of simplicity, we will just add a new folder under the main folder named java.
+
+Configure pom.xml:
+Above dependencies section, add properties section containing the jdk.version definition:
+    <properties>
+        <jdk.version>1.8</jdk.version>
+    </properties>
+Under build section, add the maven compiler plugin and jetty plugin. Jetty plugin will be the web app container just like tomcat, jboss, glassfish, etc.
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.0</version>
+            <configuration>
+                <source>${jdk.version}</source>
+                <target>${jdk.version}</target>
+            </configuration>
+        </plugin>
+        <plugin>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>maven-jetty-plugin</artifactId>
+            <version>6.1.10</version>
+            <configuration>
+                <scanIntervalSeconds>10</scanIntervalSeconds>
+                <connectors>
+                    <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+                        <port>8080</port>
+                        <maxIdleTime>60000</maxIdleTime>
+                    </connector>
+                </connectors>
+                <stopKey>STOP</stopKey>
+                <stopPort>8005</stopPort>
+            </configuration>
+        </plugin>
+    </plugins>
+
+Deploying/Running the Project:
+Under Maven Projects, open your webapp project, click plugins and double click jetty:run.
+In the console you can see the status of your deployment. Once you see something like Started SelectChannelConnector@0.0.0.0:8080
+browse the web at address localhost:8080/ProjectName
